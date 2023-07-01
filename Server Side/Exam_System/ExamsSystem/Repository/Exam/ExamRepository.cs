@@ -80,7 +80,7 @@ namespace ExamsSystem.Repository
 
         private async Task<Exam> IsExisted(int id)
         {
-            return await _dbcontext.Exams.FirstOrDefaultAsync(dep => dep.ID == id);
+            return await _dbcontext.Exams.FirstOrDefaultAsync(e => e.ID == id);
         }
         #endregion
     }
