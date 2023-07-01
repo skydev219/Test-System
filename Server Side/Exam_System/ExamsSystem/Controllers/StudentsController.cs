@@ -12,14 +12,14 @@ namespace ExamsSystem.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AdminsController : ControllerBase
+    public class StudentsController : ControllerBase
     {
         #region Fields
-        IEntityRepository<Admin> _context;
+        private readonly IEntityRepository<Student> _context;
         #endregion
 
         #region Constructors
-        public AdminsController(IEntityRepository<Admin> context)
+        public StudentsController(IEntityRepository<Student> context)
         {
             _context = context;
         }
@@ -27,41 +27,45 @@ namespace ExamsSystem.Controllers
 
         #region Methods
         #region Get
-        // GET: api/Admins
+        // GET: api/Students
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Admin>>> GetAdmins()
+        public async Task<ActionResult<IEnumerable<Student>>> GetStudents()
         {
-            IEnumerable<Admin> ads = await _context.GetAll();
-            if (ads == null) return NotFound();
-            return Ok(ads);
+            IEnumerable<Student> stds = await _context.GetAll();
+            if ( stds == null) return NotFound();
+
+            return Ok(stds);
         }
 
-        // GET: api/Admins/5
+        // GET: api/Students/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Admin>> GetAdmin(int id)
+        public async Task<ActionResult<Student>> GetStudent(int id)
         {
-            Admin? ad = await _context.GetById(id);
-            if (_context.GetById(id) == null) return NotFound();
-            return ad;
+            Student? std = await _context.GetById(id);
+            if (std == null) return NotFound();
+
+            return Ok(std);
         }
         #endregion
 
         #region Update
-        // PUT: api/Admins/5
+        // PUT: api/Students/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAdmin(int id, Admin admin)
+        public async Task<IActionResult> PutStudent(int id, Student student)
         {
-            if (admin == null) return NotFound();
-            if (id != admin.ID) return BadRequest();
+            if (id != student.ID) return BadRequest();
+            if (student == null) return NotFound();
+
 
             try
             {
-                await _context.Update(id, admin);
+                await _context.Update(id, student);
+
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (GetAdmin(id) == null)
+                if (GetStudent(id) == null)
                 {
                     return NotFound();
                 }
@@ -72,47 +76,47 @@ namespace ExamsSystem.Controllers
         #endregion
 
         #region Add
-        // POST: api/Admins
+        // POST: api/Students
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Admin>> PostAdmin(Admin admin)
+        public async Task<ActionResult<Student>> PostStudent(Student student)
         {
-            if (admin == null) return BadRequest();
+              if (student == null) return BadRequest();
             try
             {
-                Admin a = new Admin()
+                Student st = new Student()
                 {
-                    ID = admin.ID,
-                    Name = admin.Name,
-                    UserName = admin.UserName,
-                    Pass = admin.Pass
+                    ID = student.ID,
+                    Name = student.Name,
+                    UserName = student.UserName,
+                    Pass=student.Pass
                 };
-                await _context.Add(a);
-                return CreatedAtAction("GetAdmin", new { id = admin.ID }, admin);
+                await _context.Add(st);
+                return CreatedAtAction("GetStudent", new { id = student.ID }, student);
             }
             catch (Exception e)
             {
                 return BadRequest(e.Message);
             }
-            
+
         }
         #endregion
 
         #region Delete
-        // DELETE: api/Admins/5
+        // DELETE: api/Students/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAdmin(int id)
+        public async Task<IActionResult> DeleteStudent(int id)
         {
-            Admin? admin = await _context.GetById(id);
+            Student? std = await _context.GetById(id);
 
-            if (admin == null) return NotFound();
+            if (std == null) return NotFound();
             try
             {
                 await _context.DeleteById(id);
                 var response = new
                 {
                     message = "Deleted Success",
-                    admin
+                    std
                 };
                 return Ok(response);
             }
@@ -121,17 +125,8 @@ namespace ExamsSystem.Controllers
                 return BadRequest(e.Message);
             }
         }
-        #endregion
 
         #endregion
-
+        #endregion
     }
 }
-
-
-//#region Fields
-//#endregion
-//#region Constructors
-//#endregion
-//#region Methods
-//#endregion
