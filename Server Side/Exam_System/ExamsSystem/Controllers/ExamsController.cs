@@ -132,7 +132,7 @@ namespace ExamsSystem.Controllers
         #endregion
 
         #region TEST
-        // Fatma is PIS
+        // Fatma
         #endregion
 
         #endregion
