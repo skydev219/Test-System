@@ -132,7 +132,9 @@ namespace ExamsSystem.Controllers
         #endregion
 
         #region TEST
-        //ASDAS asdasd
+
+        string name;
+
         #endregion
 
         #endregion
