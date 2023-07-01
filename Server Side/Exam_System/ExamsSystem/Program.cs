@@ -47,6 +47,8 @@ namespace ExamsSystem
             #region DI
             builder.Services.AddScoped<IEntityRepository<Exam>, ExamRepository>();
             builder.Services.AddScoped<IExam, ExamRepository>();
+            builder.Services.AddScoped<IEntityRepository<Admin>, AdminRepository>();
+
             #endregion
 
             builder.Services.AddControllers();
