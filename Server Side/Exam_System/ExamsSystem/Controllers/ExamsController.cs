@@ -1,4 +1,10 @@
-﻿namespace ExamsSystem.Controllers
+﻿using ExamsSystem.DTO;
+using ExamsSystem.Models;
+using ExamsSystem.Repository.IEntities;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
+namespace ExamsSystem.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
