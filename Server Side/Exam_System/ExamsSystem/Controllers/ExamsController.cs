@@ -57,12 +57,17 @@ namespace ExamsSystem.Controllers
         #region Add
         // POST: api/Exams
         [HttpPost]
-        public async Task<ActionResult<Exam>> PostExam(Exam exam)
+        public async Task<ActionResult<Exam>> PostExam(ExamDTO exam)
         {
             if (exam == null) return BadRequest();
             try
             {
-                await _context.Add(exam);
+                Exam e = new Exam()
+                {
+                    ID = exam.ID,
+                    Name = exam.Name,
+                };
+                await _context.Add(e);
                 return CreatedAtAction("GetExam", new { id = exam.ID }, exam);
             }
             catch (Exception e)
@@ -131,10 +136,7 @@ namespace ExamsSystem.Controllers
         }
         #endregion
 
-        #region TEST
-        // Fatma asdasd
-        #endregion
-        // Mohammed Gamal
+        
         #endregion
     }
 }
