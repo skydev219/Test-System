@@ -48,6 +48,8 @@ namespace ExamsSystem
             builder.Services.AddScoped<IEntityRepository<Exam>, ExamRepository>();
             builder.Services.AddScoped<IExam, ExamRepository>();
             builder.Services.AddScoped<IEntityRepository<Admin>, AdminRepository>();
+            builder.Services.AddScoped<IEntityRepository<Student>, StudentRepository>();
+
 
             #endregion
 
