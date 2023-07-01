@@ -132,7 +132,7 @@ namespace ExamsSystem.Controllers
         #endregion
 
         #region TEST
-
+        string name;
         #endregion
 
         #endregion
