@@ -1,5 +1,6 @@
 using ExamsSystem.Models;
 using ExamsSystem.Repository;
+using ExamsSystem.Repository.Grades;
 using ExamsSystem.Repository.IEntities;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
@@ -51,6 +52,8 @@ namespace ExamsSystem
             builder.Services.AddScoped<IEntityRepository<Student>, StudentRepository>();
             builder.Services.AddScoped<IEntityRepository<Question>, QuestionRepository>();
             builder.Services.AddScoped<IEntityRepository<Answer>, AnswerRepository>();
+            builder.Services.AddScoped<IGrades, GradesRepository>();
+
 
             #endregion
 

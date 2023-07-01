@@ -15,9 +15,9 @@ namespace ExamsSystem.Controllers
         #endregion
 
         #region Constructors
-        public ExamsController(IEntityRepository<Exam> examRepository)
+        public ExamsController(IEntityRepository<Exam> context)
         {
-            _context = examRepository;
+            _context = context;
         }
         #endregion
 

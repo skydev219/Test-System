@@ -15,7 +15,7 @@ namespace ExamsSystem.Models
         [Key]
         public int St_ID { get; set; }
         [Column("Grade")]
-        public int? Grade1 { get; set; }
+        public int Grade1 { get; set; }
 
         [ForeignKey("Exam_ID")]
         [InverseProperty("Grades")]
