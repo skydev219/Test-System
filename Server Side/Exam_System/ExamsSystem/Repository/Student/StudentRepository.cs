@@ -34,7 +34,7 @@ namespace ExamsSystem.Repository
         #region Add
         public async Task Add(Student std)
         {
-            _dbcontext.Students.Add(std);
+            await _dbcontext.Students.AddAsync(std);
             await _dbcontext.SaveChangesAsync();
         }
         #endregion
@@ -50,11 +50,18 @@ namespace ExamsSystem.Repository
         #region Delete
         public async Task DeleteById(int id)
         {
-            //var std = await _dbcontext.Students.FirstOrDefaultAsync(s => s.ID == id);
-            _dbcontext.Remove(GetById(id));
-            await _dbcontext.SaveChangesAsync();
+            if (await IsExisted(id) != null)
+            {
+                _dbcontext.Students.Remove(await IsExisted(id));
+                await _dbcontext.SaveChangesAsync();
+            }
         }
         #endregion
+
+        private async Task<Student> IsExisted(int id)
+        {
+            return await _dbcontext.Students.FirstOrDefaultAsync(q => q.ID == id);
+        }
 
         #endregion
     }
