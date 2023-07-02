@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ExamsSystem.Models;
 using ExamsSystem.Repository.IEntities;
+using ExamsSystem.DTO;
 
 namespace ExamsSystem.Controllers
 {
@@ -52,15 +53,17 @@ namespace ExamsSystem.Controllers
         // PUT: api/Answers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAnswer(int id, Answer answer)
+        public async Task<IActionResult> PutAnswer(int id, AddAnswerDTO answer)
         {
-
-            if (answer == null) return NotFound();
+            Answer ans = await _context.GetById(id);
+            if (ans == null) return NotFound();
             if (id != answer.ID) return BadRequest();
 
             try
             {
-                await _context.Update(id, answer);
+                ans.Name= answer.Name;
+                
+                await _context.Update(id, ans);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -78,19 +81,19 @@ namespace ExamsSystem.Controllers
         // POST: api/Answers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Answer>> PostAnswer(Answer answer)
+        public async Task<ActionResult<AddAnswerDTO>> PostAnswer(AddAnswerDTO answer)
         {
             if (answer == null) return BadRequest();
             try
             {
-                Answer e = new Answer()
+                Answer a = new Answer()
                 {
-                    ID = answer.ID,
+
                     Name = answer.Name,
                     Q_ID = answer.Q_ID
                 };
-                await _context.Add(e);
-                return CreatedAtAction("GetAnswer", new { id = answer.ID }, answer);
+                await _context.Add(a);
+                return CreatedAtAction("GetAnswer", new { id = a.ID }, a);
             }
             catch (Exception e)
             {

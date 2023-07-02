@@ -32,6 +32,15 @@ namespace ExamsSystem.Repository.Grades
         {
             return await _dbcontext.Grades.Include(g => g.St).Include(g => g.Exam).FirstOrDefaultAsync(a => a.St_ID == st_id && a.Exam_ID == ex_id);
         }
+        public async Task<List<Grade>> GetByExam(int ex_id)
+        {
+            return await _dbcontext.Grades.Include(g => g.St).Include(g => g.Exam).Where(a => a.Exam_ID == ex_id).ToListAsync();
+        }
+
+        public async Task<List<Grade>> GetByStudent(int st_id)
+        {
+            return await _dbcontext.Grades.Include(g => g.Exam).Include(g => g.St).Where(a => a.St_ID == st_id).ToListAsync();
+        }
         #endregion
 
         #region Add

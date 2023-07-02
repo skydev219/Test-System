@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ExamsSystem.Models;
 using ExamsSystem.Repository.IEntities;
+using ExamsSystem.DTO;
 
 namespace ExamsSystem.Controllers
 {
@@ -52,15 +53,19 @@ namespace ExamsSystem.Controllers
         // PUT: api/Students/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutStudent(int id, Student student)
+        public async Task<IActionResult> PutStudent(int id, AddStudentDTO student)
         {
-            if (id != student.ID) return BadRequest();
-            if (student == null) return NotFound();
+            Student? std = await _context.GetById(student.ID);
+            if (id != std.ID) return BadRequest();
+            if (std == null) return NotFound();
 
 
             try
             {
-                await _context.Update(id, student);
+                std.Name = student.Name;
+                std.UserName = student.UserName;
+                std.Pass = student.Pass;
+                await _context.Update(id, std);
 
             }
             catch (DbUpdateConcurrencyException)
@@ -79,20 +84,22 @@ namespace ExamsSystem.Controllers
         // POST: api/Students
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Student>> PostStudent(Student student)
+        public async Task<ActionResult<AddStudentDTO>> PostStudent(AddStudentDTO student)
         {
-              if (student == null) return BadRequest();
+
+            if (student == null) return BadRequest();
             try
             {
                 Student st = new Student()
                 {
-                    ID = student.ID,
+
                     Name = student.Name,
                     UserName = student.UserName,
-                    Pass=student.Pass
+                    Pass = student.Pass
+
                 };
                 await _context.Add(st);
-                return CreatedAtAction("GetStudent", new { id = student.ID }, student);
+                return CreatedAtAction("GetStudent", new { id = st.ID }, st);
             }
             catch (Exception e)
             {

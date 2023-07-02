@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ExamsSystem.Models;
 using ExamsSystem.Repository.IEntities;
+using ExamsSystem.DTO;
 
 namespace ExamsSystem.Controllers
 {
@@ -52,14 +53,16 @@ namespace ExamsSystem.Controllers
         // PUT: api/Questions/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutQuestion(int id, Question question)
+        public async Task<IActionResult> PutQuestion(int id, AddQuestionDTO question)
         {
-            if (question == null) return NotFound();
+            Question que = await _context.GetById(id);
+            if (que == null) return NotFound();
             if (id != question.ID) return BadRequest();
 
             try
             {
-                await _context.Update(id, question);
+                que.Name = question.Name;
+                await _context.Update(id, que);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -78,7 +81,7 @@ namespace ExamsSystem.Controllers
         // POST: api/Questions
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Question>> PostQuestion(Question question)
+        public async Task<ActionResult<AddQuestionDTO>> PostQuestion(AddQuestionDTO question)
         {
             if (question == null) return BadRequest();
             try
@@ -89,7 +92,7 @@ namespace ExamsSystem.Controllers
                     Exam_ID = question.Exam_ID,
                 };
                 await _context.Add(q);
-                return CreatedAtAction("GetQuestion", new { id = q.ID }, question);
+                return CreatedAtAction("GetQuestion", new { id = q.ID }, q);
             }
             catch (Exception e)
             {
