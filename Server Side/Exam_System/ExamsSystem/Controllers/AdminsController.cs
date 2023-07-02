@@ -81,7 +81,8 @@ namespace ExamsSystem.Controllers
                 response = new
                 {
                     token = _jwt.GenentateToken(claims),
-                    user = new
+                    role = "Admin",
+                    admin = new
                     {
                         id = admin.ID,
                         name = admin.Name,
@@ -107,11 +108,9 @@ namespace ExamsSystem.Controllers
         [Authorize(Policy = "Admin")]
         public async Task<ActionResult<IEnumerable<Admin>>> GetAdmins()
         {
-
-
-            IEnumerable<Admin> ads = await _context.GetAll();
-            if (ads == null) return NotFound();
-            return Ok(ads);
+            IEnumerable<Admin> admin = await _context.GetAll();
+            if (admin == null) return NotFound();
+            return Ok(admin);
         }
 
         // GET: api/Admins/5
