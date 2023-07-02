@@ -82,7 +82,8 @@ namespace ExamsSystem.Controllers
                 response = new
                 {
                     token = _jwt.GenentateToken(claims),
-                    user = new
+                    role = "Student",
+                    student = new
                     {
                         id = student.ID,
                         name = student.Name,
