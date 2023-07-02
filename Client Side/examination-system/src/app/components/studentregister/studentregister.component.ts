@@ -12,4 +12,24 @@ registerForm = new FormGroup({
   UserName: new FormControl('',[Validators.required,Validators.minLength(5)]),
   Pass:new FormControl('',[Validators.required,Validators.minLength(3)])
 });
+get GetName(){
+  return this.registerForm.controls['Name'];
+}
+get GetUserName(){
+  return this.registerForm.controls['UserName'];
+}
+get GetPassword(){
+  return this.registerForm.controls['Pass'];
+}
+
+
+
+
+
+
+
+
+
+
+
 }
