@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using ExamsSystem.DTO;
 using ExamsSystem.Models;
 using ExamsSystem.Repository.IEntities;
-using ExamsSystem.DTO;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ExamsSystem.Controllers
 {
@@ -29,6 +25,7 @@ namespace ExamsSystem.Controllers
         #region Methods
         #region Get
         // GET: api/Answers
+        [Authorize(Policy = "Student,Admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Answer>>> GetAnswers()
         {
@@ -39,6 +36,7 @@ namespace ExamsSystem.Controllers
         }
 
         // GET: api/Answers/5
+        [Authorize(Policy = "Student,Admin")]
         [HttpGet("{id}")]
         public async Task<ActionResult<Answer>> GetAnswer(int id)
         {
@@ -51,7 +49,7 @@ namespace ExamsSystem.Controllers
 
         #region Update
         // PUT: api/Answers/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(Policy = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAnswer(int id, AddAnswerDTO answer)
         {
@@ -61,8 +59,8 @@ namespace ExamsSystem.Controllers
 
             try
             {
-                ans.Name= answer.Name;
-                
+                ans.Name = answer.Name;
+
                 await _context.Update(id, ans);
             }
             catch (DbUpdateConcurrencyException)
@@ -79,7 +77,7 @@ namespace ExamsSystem.Controllers
 
         #region Add
         // POST: api/Answers
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(Policy = "Admin")]
         [HttpPost]
         public async Task<ActionResult<AddAnswerDTO>> PostAnswer(AddAnswerDTO answer)
         {
@@ -105,9 +103,11 @@ namespace ExamsSystem.Controllers
 
         #region Delete
         // DELETE: api/Answers/5
+        [Authorize(Policy = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAnswer(int id)
         {
+
             Answer? answer = await _context.GetById(id);
 
             if (answer == null) return NotFound();
@@ -127,6 +127,8 @@ namespace ExamsSystem.Controllers
             }
         }
         #endregion
+
+
         #endregion
     }
 }

@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using ExamsSystem.DTO;
 using ExamsSystem.Models;
 using ExamsSystem.Repository.IEntities;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace ExamsSystem.Controllers
 {
@@ -15,34 +14,114 @@ namespace ExamsSystem.Controllers
     public class AdminsController : ControllerBase
     {
         #region Fields
+        readonly IJWT _jwt;
+        readonly IConfiguration _configuration;
+        readonly IAuthentication<Admin> _authentication;
+
         IEntityRepository<Admin> _context;
         #endregion
 
         #region Constructors
-        public AdminsController(IEntityRepository<Admin> context)
+        public AdminsController(IJWT jWT, IConfiguration configuration, IAuthentication<Admin> authentication, IEntityRepository<Admin> context)
         {
+            _jwt = jWT;
+            _configuration = configuration;
+            _authentication = authentication;
             _context = context;
         }
         #endregion
 
         #region Methods
+
+        #region Authentication
+        #region Login
+        [HttpPost("Login")]
+        public async Task<ActionResult> Login([FromForm] LoginDTO login)
+        {
+
+            #region Check Parameters 
+            var EmptyParametersObj = new
+            {
+                StatusCode = 400,
+                message = "Empty Parameters",
+            };
+            if (login.Username == null || login.Password == null) return BadRequest(EmptyParametersObj);
+            #endregion
+
+            Admin? admin = await _authentication.Login(login);
+
+            #region Check is Existed
+            var InvalidCredentialObj = new
+            {
+                StatusCode = 400,
+                message = "Invalid Credential",
+            };
+
+            if (admin == null)
+                return BadRequest(InvalidCredentialObj);
+            #endregion
+
+            #region Define Claims
+            List<Claim> claims = new List<Claim>()
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, _configuration[key: "Jwt:Subject"]),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
+                new Claim(type: "name", admin.Name),
+                new Claim(ClaimTypes.Role , "Admin")
+            };
+            #endregion
+
+            #region Response Formatter
+            var response = new
+            {
+
+                StatusCode = 200,
+                message = "Login successful",
+                response = new
+                {
+                    token = _jwt.GenentateToken(claims),
+                    user = new
+                    {
+                        id = admin.ID,
+                        name = admin.Name,
+                        username = admin.UserName,
+                    }
+                }
+
+            };
+            #endregion
+
+            return Ok(response);
+        }
+        #endregion
+
+        #region Register
+
+        #endregion
+        #endregion
+
         #region Get
         // GET: api/Admins
         [HttpGet]
+        [Authorize(Policy = "Admin")]
         public async Task<ActionResult<IEnumerable<Admin>>> GetAdmins()
         {
+
+
             IEnumerable<Admin> ads = await _context.GetAll();
             if (ads == null) return NotFound();
             return Ok(ads);
         }
 
         // GET: api/Admins/5
+        [Authorize(Policy = "Admin")]
         [HttpGet("{id}")]
         public async Task<ActionResult<Admin>> GetAdmin(int id)
         {
-            Admin? ad = await _context.GetById(id);
+            Admin? admin = await _context.GetById(id);
             if (_context.GetById(id) == null) return NotFound();
-            return ad;
+            return admin;
         }
         #endregion
 
@@ -50,6 +129,7 @@ namespace ExamsSystem.Controllers
         // PUT: api/Admins/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutAdmin(int id, Admin admin)
         {
             if (admin == null) return NotFound();
@@ -73,10 +153,11 @@ namespace ExamsSystem.Controllers
 
         #region Add
         // POST: api/Admins
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(Policy = "Admin")]
         [HttpPost]
         public async Task<ActionResult<Admin>> PostAdmin(Admin admin)
         {
+            if (User == null) return BadRequest();
             if (admin == null) return BadRequest();
             try
             {
@@ -94,12 +175,13 @@ namespace ExamsSystem.Controllers
             {
                 return BadRequest(e.Message);
             }
-            
+
         }
         #endregion
 
         #region Delete
         // DELETE: api/Admins/5
+        [Authorize(Policy = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAdmin(int id)
         {
@@ -127,11 +209,3 @@ namespace ExamsSystem.Controllers
 
     }
 }
-
-
-//#region Fields
-//#endregion
-//#region Constructors
-//#endregion
-//#region Methods
-//#endregion

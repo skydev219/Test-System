@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using ExamsSystem.DTO;
 using ExamsSystem.Models;
 using ExamsSystem.Repository.IEntities;
-using ExamsSystem.DTO;
-using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ExamsSystem.Controllers
 {
@@ -31,6 +26,7 @@ namespace ExamsSystem.Controllers
         #region Get
 
         // GET: api/Grades
+        [Authorize(Policy = "Student,Admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<GradesDTO>>> GetGrades()
         {
@@ -55,10 +51,11 @@ namespace ExamsSystem.Controllers
             return Ok(grs);
         }
 
+        [Authorize(Policy = "Student,Admin")]
         [HttpGet("{st_id},{ex_id}")]
         public async Task<ActionResult<Grade>> GetGrade(int st_id, int ex_id)
         {
-            Grade? gr = await _context.GetById(st_id,ex_id);
+            Grade? gr = await _context.GetById(st_id, ex_id);
             if (gr == null) return NotFound();
             GradesDTO grade = new GradesDTO()
             {
@@ -74,7 +71,7 @@ namespace ExamsSystem.Controllers
         [Route("Student/{st_id}")]
         public async Task<ActionResult<GradesDTO>> GetByStudent(int st_id)
         {
-            
+
             IEnumerable<Grade> grades = await _context.GetByStudent(st_id);
             if (grades == null) return NotFound();
 
@@ -121,12 +118,12 @@ namespace ExamsSystem.Controllers
             return Ok(grs);
         }
 
-        
+
         #endregion
 
         #region Update
         // PUT: api/Grades/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(Policy = "Student,Admin")]
         [HttpPut]
         public async Task<IActionResult> PutGrade(AddGradeDTO grade)
         {
@@ -134,12 +131,12 @@ namespace ExamsSystem.Controllers
             if (gr == null) return NotFound();
             try
             {
-                gr.Grade1=grade.Grade1;
+                gr.Grade1 = grade.Grade1;
                 await _context.Update(gr);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (GetGrade(grade.St_ID,grade.Exam_ID) == null)
+                if (GetGrade(grade.St_ID, grade.Exam_ID) == null)
                 {
                     return NotFound();
                 }
@@ -150,7 +147,6 @@ namespace ExamsSystem.Controllers
 
         #region Add
         // POST: api/Grades
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<AddGradeDTO>> PostGrade(AddGradeDTO grade)
         {
@@ -164,7 +160,7 @@ namespace ExamsSystem.Controllers
                     Grade1 = grade.Grade1
                 };
                 await _context.Add(gr);
-                return CreatedAtAction("GetGrade", new {st_id = gr.St_ID,ex_id=gr.Exam_ID}, gr);
+                return CreatedAtAction("GetGrade", new { st_id = gr.St_ID, ex_id = gr.Exam_ID }, gr);
             }
             catch (Exception e)
             {
@@ -175,15 +171,16 @@ namespace ExamsSystem.Controllers
 
         #region Delete
         // DELETE: api/Grades/5
+        [Authorize(Policy = "Admin")]
         [HttpDelete("{st_id},{ex_id}")]
-        public async Task<IActionResult> DeleteGrade(int st_id,int ex_id)
+        public async Task<IActionResult> DeleteGrade(int st_id, int ex_id)
         {
-            Grade? gr = await _context.GetById(st_id,ex_id);
+            Grade? gr = await _context.GetById(st_id, ex_id);
 
             if (gr == null) return NotFound();
             try
             {
-                await _context.DeleteById(st_id,ex_id);
+                await _context.DeleteById(st_id, ex_id);
                 var response = new
                 {
                     message = "Deleted Success",

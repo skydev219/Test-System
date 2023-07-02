@@ -2,7 +2,12 @@ using ExamsSystem.Models;
 using ExamsSystem.Repository;
 using ExamsSystem.Repository.Grades;
 using ExamsSystem.Repository.IEntities;
+using ExamsSystem.Repository.JWT;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
+using System.Text;
 using System.Text.Json.Serialization;
 
 namespace ExamsSystem
@@ -45,6 +50,34 @@ namespace ExamsSystem
             );
             #endregion
 
+            #region JWT
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidAudience = builder.Configuration["Jwt:Audience"],
+                    ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
+                    RoleClaimType = ClaimTypes.Role,
+
+                };
+            });
+
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Admin",
+                    policy => policy.RequireClaim(ClaimTypes.Role, "Admin"));
+                options.AddPolicy("Student",
+                    policy => policy.RequireRole("Student"));
+            });
+            #endregion
+
             #region DI
             builder.Services.AddScoped<IEntityRepository<Exam>, ExamRepository>();
             builder.Services.AddScoped<IExam, ExamRepository>();
@@ -53,7 +86,10 @@ namespace ExamsSystem
             builder.Services.AddScoped<IEntityRepository<Question>, QuestionRepository>();
             builder.Services.AddScoped<IEntityRepository<Answer>, AnswerRepository>();
             builder.Services.AddScoped<IGrades, GradesRepository>();
-
+            builder.Services.AddScoped<IJWT, JWTRepository>();
+            builder.Services.AddScoped<IAuthentication<Admin>, AdminRepository>();
+            builder.Services.AddScoped<IAuthentication<Student>, StudentRepository>();
+            builder.Services.AddScoped<IStudentAuth<Student>, StudentRepository>();
 
             #endregion
 
@@ -73,11 +109,14 @@ namespace ExamsSystem
 
             app.UseHttpsRedirection();
 
+
+            app.UseAuthentication();
+
             app.UseAuthorization();
 
 
             app.MapControllers();
-            app.UseCors("AllowAll"); // Alow Cors
+            app.UseCors("AllowAll");
 
             app.Run();
         }

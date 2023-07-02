@@ -1,6 +1,7 @@
 ﻿using ExamsSystem.DTO;
 using ExamsSystem.Models;
 using ExamsSystem.Repository.IEntities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,6 +26,7 @@ namespace ExamsSystem.Controllers
 
         #region Get
         // GET: api/Exams
+        [Authorize(Policy = "Student,Admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Exam>>> GetExams()
         {
@@ -44,6 +46,7 @@ namespace ExamsSystem.Controllers
         }
 
         // GET: api/Exams/5
+        [Authorize(Policy = "Student,Admin")]
         [HttpGet("{id}")]
         public async Task<ActionResult<Exam>> GetExam(int id)
         {
@@ -56,6 +59,7 @@ namespace ExamsSystem.Controllers
 
         #region Add
         // POST: api/Exams
+        [Authorize(Policy = "Admin")]
         [HttpPost]
         public async Task<ActionResult<AddExamDTO>> PostExam(AddExamDTO exam)
         {
@@ -104,6 +108,7 @@ namespace ExamsSystem.Controllers
 
         #region Delete
         // DELETE: api/Exams/5
+        [Authorize(Policy = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteExam(int id)
         {
@@ -137,7 +142,6 @@ namespace ExamsSystem.Controllers
         }
         #endregion
 
-        
         #endregion
     }
 }

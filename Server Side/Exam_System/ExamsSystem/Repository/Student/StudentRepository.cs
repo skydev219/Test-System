@@ -1,10 +1,11 @@
-﻿using ExamsSystem.Models;
+﻿using ExamsSystem.DTO;
+using ExamsSystem.Models;
 using ExamsSystem.Repository.IEntities;
 using Microsoft.EntityFrameworkCore;
 
 namespace ExamsSystem.Repository
 {
-    public class StudentRepository : IEntityRepository<Student>
+    public class StudentRepository : IEntityRepository<Student>, IStudentAuth<Student>
     {
         #region Fileds
         readonly SchoolContext _dbcontext;
@@ -18,6 +19,31 @@ namespace ExamsSystem.Repository
         #endregion
 
         #region Methods
+
+        #region Authentication
+        #region Login
+        public Task<Student> Login(LoginDTO login)
+        {
+            return _dbcontext
+                .Students
+                .FirstOrDefaultAsync(s => s.UserName == login.Username && s.Pass == login.Password);
+        }
+        #endregion
+
+        #region Register
+        public async Task Register(Student student)
+        {
+            await _dbcontext.Students.AddAsync(student);
+            await _dbcontext.SaveChangesAsync();
+        }
+        #endregion
+
+
+        public async Task<bool> IsUsernameTakenAsync(string username)
+        {
+            return await _dbcontext.Students.AnyAsync(u => u.UserName == username);
+        }
+        #endregion
 
         #region Get
         public async Task<List<Student>> GetAll()
@@ -62,6 +88,8 @@ namespace ExamsSystem.Repository
         {
             return await _dbcontext.Students.FirstOrDefaultAsync(q => q.ID == id);
         }
+
+
 
         #endregion
     }

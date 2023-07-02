@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using ExamsSystem.DTO;
 using ExamsSystem.Models;
 using ExamsSystem.Repository.IEntities;
-using ExamsSystem.DTO;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ExamsSystem.Controllers
 {
@@ -34,7 +30,7 @@ namespace ExamsSystem.Controllers
         {
             IEnumerable<Question> questions = await _context.GetAll();
             if (questions == null) return NotFound();
-          
+
             return Ok(questions);
         }
 
@@ -51,7 +47,7 @@ namespace ExamsSystem.Controllers
 
         #region Update
         // PUT: api/Questions/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(Policy = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutQuestion(int id, AddQuestionDTO question)
         {
@@ -79,7 +75,7 @@ namespace ExamsSystem.Controllers
 
         #region Add
         // POST: api/Questions
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(Policy = "Admin")]
         [HttpPost]
         public async Task<ActionResult<AddQuestionDTO>> PostQuestion(AddQuestionDTO question)
         {
@@ -98,12 +94,13 @@ namespace ExamsSystem.Controllers
             {
                 return BadRequest(e.Message);
             }
-           
+
         }
         #endregion
 
         #region Delete
         // DELETE: api/Questions/5
+        [Authorize(Policy = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteQuestion(int id)
         {
