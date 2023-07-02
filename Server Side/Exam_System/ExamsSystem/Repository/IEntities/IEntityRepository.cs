@@ -7,5 +7,6 @@
         public Task Update(int id, t entity);
         public Task DeleteById(int id);
         public Task Add(t entity);
+
     }
 }

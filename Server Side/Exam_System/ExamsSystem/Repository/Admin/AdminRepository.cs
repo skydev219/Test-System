@@ -1,10 +1,11 @@
-﻿using ExamsSystem.Models;
+﻿using ExamsSystem.DTO;
+using ExamsSystem.Models;
 using ExamsSystem.Repository.IEntities;
 using Microsoft.EntityFrameworkCore;
 
 namespace ExamsSystem.Repository
 {
-    public class AdminRepository : IEntityRepository<Admin>
+    public class AdminRepository : IEntityRepository<Admin>, IAuthentication<Admin>
     {
         #region Fileds
         readonly SchoolContext _dbcontext;
@@ -18,6 +19,15 @@ namespace ExamsSystem.Repository
         #endregion
 
         #region Methods
+
+        #region Authentication
+        public async Task<Admin> Login(LoginDTO login)
+        {
+            return await _dbcontext
+                .Admins
+                .FirstOrDefaultAsync(a => a.UserName == login.Username && a.Pass == login.Password);
+        }
+        #endregion
 
         #region Get
         public async Task<List<Admin>> GetAll()
@@ -62,6 +72,7 @@ namespace ExamsSystem.Repository
         {
             return await _dbcontext.Admins.FirstOrDefaultAsync(q => q.ID == id);
         }
+
 
 
         #endregion

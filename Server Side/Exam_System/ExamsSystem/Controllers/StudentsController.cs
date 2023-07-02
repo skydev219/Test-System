@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using ExamsSystem.DTO;
 using ExamsSystem.Models;
 using ExamsSystem.Repository.IEntities;
-using ExamsSystem.DTO;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace ExamsSystem.Controllers
 {
@@ -16,29 +14,132 @@ namespace ExamsSystem.Controllers
     public class StudentsController : ControllerBase
     {
         #region Fields
-        private readonly IEntityRepository<Student> _context;
+        readonly IJWT _jwt;
+        readonly IConfiguration _configuration;
+        readonly IStudentAuth<Student> _authentication;
+
+        IEntityRepository<Student> _context;
+
         #endregion
 
         #region Constructors
-        public StudentsController(IEntityRepository<Student> context)
+        public StudentsController(IJWT jWT, IConfiguration configuration, IEntityRepository<Student> context, IStudentAuth<Student> studentAuth)
         {
+            _jwt = jWT;
+            _configuration = configuration;
             _context = context;
+            _authentication = studentAuth;
         }
         #endregion
 
         #region Methods
+
+        #region Authentication
+        #region Login
+        [HttpPost("Login")]
+        public async Task<ActionResult> Login([FromForm] LoginDTO login)
+        {
+            #region Check Parameters 
+            var EmptyParametersObj = new
+            {
+                StatusCode = 400,
+                message = "Empty Parameters",
+            };
+            if (login.Username == null || login.Password == null) return BadRequest(EmptyParametersObj);
+            #endregion
+
+            Student? student = await _authentication.Login(login);
+
+            #region Check is Existed
+            var InvalidCredentialObj = new
+            {
+                StatusCode = 400,
+                message = "Invalid Credential",
+            };
+
+            if (student == null)
+                return BadRequest(InvalidCredentialObj);
+            #endregion
+
+            #region Define Claims
+            List<Claim> claims = new List<Claim>()
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, _configuration[key: "Jwt:Subject"]),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
+                new Claim(type: "name", student.Name),
+                new Claim("username",student.UserName),
+                new Claim(ClaimTypes.Role , "Student")
+            };
+            #endregion
+
+            #region Response Formatter
+            var response = new
+            {
+
+                StatusCode = 200,
+                message = "Login successful",
+                response = new
+                {
+                    token = _jwt.GenentateToken(claims),
+                    user = new
+                    {
+                        id = student.ID,
+                        name = student.Name,
+                        username = student.UserName,
+                    }
+                }
+
+            };
+            #endregion
+
+            return Ok(response);
+        }
+
+        #endregion
+
+        #region Register
+        [HttpPost("Register")]
+        public async Task<ActionResult> Register([FromForm] Student student)
+        {
+            if (student == null) return BadRequest();
+            if (await _authentication.IsUsernameTakenAsync(student.UserName))
+                return BadRequest(new { StatusCode = 400, message = "This Username Had Taken" });
+            try
+            {
+                Student st = new Student()
+                {
+
+                    Name = student.Name,
+                    UserName = student.UserName,
+                    Pass = student.Pass
+
+                };
+                await _context.Add(st);
+                return CreatedAtAction("GetStudent", new { id = st.ID }, st);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+        #endregion
+        #endregion
+
         #region Get
         // GET: api/Students
+        [Authorize(Policy = "Admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Student>>> GetStudents()
         {
             IEnumerable<Student> stds = await _context.GetAll();
-            if ( stds == null) return NotFound();
+            if (stds == null) return NotFound();
 
             return Ok(stds);
         }
 
         // GET: api/Students/5
+        [Authorize(Policy = "Admin")]
         [HttpGet("{id}")]
         public async Task<ActionResult<Student>> GetStudent(int id)
         {
@@ -51,9 +152,9 @@ namespace ExamsSystem.Controllers
 
         #region Update
         // PUT: api/Students/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(Policy = "Student,Admin")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutStudent(int id, AddStudentDTO student)
+        public async Task<IActionResult> PutStudent(int id, [FromForm] AddStudentDTO student)
         {
             Student? std = await _context.GetById(student.ID);
             if (id != std.ID) return BadRequest();
@@ -82,12 +183,14 @@ namespace ExamsSystem.Controllers
 
         #region Add
         // POST: api/Students
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<ActionResult<AddStudentDTO>> PostStudent(AddStudentDTO student)
+        public async Task<ActionResult<AddStudentDTO>> PostStudent([FromForm] AddStudentDTO student)
         {
 
             if (student == null) return BadRequest();
+            if (await _authentication.IsUsernameTakenAsync(student.UserName))
+                return BadRequest(new { StatusCode = 401, message = "This Username Had Taken" });
             try
             {
                 Student st = new Student()
@@ -111,19 +214,20 @@ namespace ExamsSystem.Controllers
 
         #region Delete
         // DELETE: api/Students/5
+        [Authorize(Roles = "Student,Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStudent(int id)
         {
-            Student? std = await _context.GetById(id);
+            Student? student = await _context.GetById(id);
 
-            if (std == null) return NotFound();
+            if (student == null) return NotFound();
             try
             {
                 await _context.DeleteById(id);
                 var response = new
                 {
                     message = "Deleted Success",
-                    std
+                    student
                 };
                 return Ok(response);
             }
