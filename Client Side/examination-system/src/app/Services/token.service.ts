@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import{CookieService} from'ngx-cookie-service';
+// import{CookieService} from'ngx-cookie-service';
 
 // const TokenKey:string = "Token";
 @Injectable({
@@ -8,15 +8,18 @@ import{CookieService} from'ngx-cookie-service';
 
 export class TokenService {
 
-  constructor(private cookieServiece:CookieService) { }
+  constructor() { }
   GetToken(){
-    return this.cookieServiece.get("Token"); 
+    return localStorage.getItem("Token");
+    // return this.cookieServiece.get("Token"); 
   }
   SaveToken(token:string){
-    this.cookieServiece.set("Token",token);
+    return localStorage.setItem("Token",token);
+    // this.cookieServiece.set("Token",token);
     //add isloggedin from login service
   }
   ClearToken(){
-    this.cookieServiece.delete("Token");
+    localStorage.removeItem("Token");
+    // this.cookieServiece.delete("Token");
   }
 }

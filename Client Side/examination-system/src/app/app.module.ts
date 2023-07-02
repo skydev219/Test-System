@@ -6,19 +6,26 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { HomeComponent } from './components/home/home.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { CookieService } from 'ngx-cookie-service';
-import { TokenService } from './Services/token.service';
+
 import { AuthInterceptor } from './Interceptor/auth.interceptor';
+import { NotfoundComponent } from './components/notfound/notfound.component';
+import { StudentloginComponent } from './components/studentlogin/studentlogin.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { StudentregisterComponent } from './components/studentregister/studentregister.component';
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
-    HomeComponent
+    HomeComponent,
+    NotfoundComponent,
+    StudentloginComponent,
+    StudentregisterComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
