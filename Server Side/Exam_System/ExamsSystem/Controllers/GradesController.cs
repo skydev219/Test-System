@@ -55,7 +55,6 @@ namespace ExamsSystem.Controllers
             return Ok(grs);
         }
 
-        // GET: api/Grades/5
         [HttpGet("{st_id},{ex_id}")]
         public async Task<ActionResult<Grade>> GetGrade(int st_id, int ex_id)
         {
@@ -69,18 +68,74 @@ namespace ExamsSystem.Controllers
             };
             return Ok(grade);
         }
+
+        // GET: api/Grades/"5"
+        [HttpGet]
+        [Route("Student/{st_id}")]
+        public async Task<ActionResult<GradesDTO>> GetByStudent(int st_id)
+        {
+            
+            IEnumerable<Grade> grades = await _context.GetByStudent(st_id);
+            if (grades == null) return NotFound();
+
+            #region Exams DTO init
+            List<GradesDTO> grs = new List<GradesDTO>();
+
+            foreach (var grade in grades)
+            {
+                grs.Add(item: new GradesDTO
+                {
+                    Student = grade.St.Name,
+                    Exam = grade.Exam.Name,
+                    Grade = grade.Grade1
+                });
+            }
+            #endregion
+
+            return Ok(grs);
+        }
+
+        // GET: api/Grades/5
+        [HttpGet]
+        [Route("exam/{ex_id}")]
+
+        public async Task<ActionResult<GradesDTO>> GetByExam(int ex_id)
+        {
+            IEnumerable<Grade> grades = await _context.GetByExam(ex_id);
+            if (grades == null) return NotFound();
+
+            #region Exams DTO init
+            List<GradesDTO> grs = new List<GradesDTO>();
+
+            foreach (var grade in grades)
+            {
+                grs.Add(item: new GradesDTO
+                {
+                    Student = grade.St.Name,
+                    Exam = grade.Exam.Name,
+                    Grade = grade.Grade1
+                });
+            }
+            #endregion
+
+            return Ok(grs);
+        }
+
+        
         #endregion
 
         #region Update
         // PUT: api/Grades/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut]
-        public async Task<IActionResult> PutGrade(Grade grade)
+        public async Task<IActionResult> PutGrade(AddGradeDTO grade)
         {
-            if (grade == null) return NotFound();
+            Grade gr = await _context.GetById(grade.St_ID, grade.Exam_ID);
+            if (gr == null) return NotFound();
             try
             {
-                await _context.Update(grade);
+                gr.Grade1=grade.Grade1;
+                await _context.Update(gr);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -97,7 +152,7 @@ namespace ExamsSystem.Controllers
         // POST: api/Grades
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Grade>> PostGrade(Grade grade)
+        public async Task<ActionResult<AddGradeDTO>> PostGrade(AddGradeDTO grade)
         {
             if (grade == null) return BadRequest();
             try

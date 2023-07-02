@@ -9,6 +9,10 @@ namespace ExamsSystem.Repository.IEntities
         public Task Update(Grade entity);
         public Task DeleteById(int st_id, int ex_id);
         public Task<Grade> GetById(int st_id, int ex_id);
+        public Task<List<Grade>> GetByExam(int ex_id);
+        public Task<List<Grade>> GetByStudent(int st_id);
+
+
 
     }
 }

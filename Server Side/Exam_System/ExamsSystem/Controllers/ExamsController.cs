@@ -57,18 +57,17 @@ namespace ExamsSystem.Controllers
         #region Add
         // POST: api/Exams
         [HttpPost]
-        public async Task<ActionResult<Exam>> PostExam(ExamDTO exam)
+        public async Task<ActionResult<AddExamDTO>> PostExam(AddExamDTO exam)
         {
             if (exam == null) return BadRequest();
             try
             {
                 Exam e = new Exam()
                 {
-                    ID = exam.ID,
-                    Name = exam.Name,
+                    Name = exam.Name
                 };
                 await _context.Add(e);
-                return CreatedAtAction("GetExam", new { id = exam.ID }, exam);
+                return CreatedAtAction("GetExam", new { id = e.ID }, e);
             }
             catch (Exception e)
             {
@@ -80,14 +79,16 @@ namespace ExamsSystem.Controllers
         #region Update
         // PUT: api/Exams/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutExam(int id, Exam exam)
+        public async Task<IActionResult> PutExam(int id, AddExamDTO exam)
         {
-            if (exam == null) return NotFound();
+            Exam? e = await _context.GetById(id);
+            if (e == null) return NotFound();
             if (id != exam.ID) return BadRequest();
 
             try
             {
-                await _context.Update(id, exam);
+                e.Name = exam.Name;
+                await _context.Update(id, e);
             }
             catch (DbUpdateConcurrencyException)
             {
