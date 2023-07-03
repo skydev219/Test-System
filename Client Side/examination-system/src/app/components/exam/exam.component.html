@@ -4,7 +4,7 @@
             <p>{{exam?.name}}</p>
             <div *ngFor="let question of exam?.questions let i = index">
                 <p>
-                    <span>Question {{i+1}}:</span>
+                    <span>Question {{i+1}}</span>
                     {{question.name}}
                 </p>
                 <p>{{question.answer.name}}</p>

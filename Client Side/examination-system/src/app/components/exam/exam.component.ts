@@ -34,9 +34,6 @@ export class ExamComponent {
       this.examService.GetExamById(this.examId).subscribe({
         next: (v: any) => {
           this.exam = v.body;
-          this.exam?.questions.forEach((element) => {
-            console.log(element.answer.name);
-          });
         },
         error: (e) => console.error(e),
         complete: () => console.info('Success'),

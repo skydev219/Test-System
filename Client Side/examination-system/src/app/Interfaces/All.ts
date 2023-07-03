@@ -1,10 +1,34 @@
-export interface Exam {
+export interface IExam {
   id: number;
   name: string;
-  admin_ID: number;
   admin: Admin;
   grades: Grade[];
   questions: Question[];
+}
+
+export class Exam implements IExam {
+  id: number;
+  name: string;
+  admin: Admin;
+  grades: Grade[];
+  questions: Question[];
+
+  /**
+   *
+   */
+  constructor(
+    id: number,
+    name: string,
+    admin: Admin,
+    grades: Grade[],
+    questions: Question[]
+  ) {
+    this.id = id;
+    this.name = name;
+    this.admin = admin;
+    this.grades = grades;
+    this.questions = questions;
+  }
 }
 
 export interface Question {
