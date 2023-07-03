@@ -36,7 +36,7 @@ namespace ExamsSystem.Controllers
         #region Authentication
         #region Login
         [HttpPost("Login")]
-        public async Task<ActionResult> Login([FromForm] LoginDTO login)
+        public async Task<ActionResult> Login(LoginDTO login)
         {
 
             #region Check Parameters 

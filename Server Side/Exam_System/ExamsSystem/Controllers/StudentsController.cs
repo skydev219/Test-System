@@ -37,7 +37,7 @@ namespace ExamsSystem.Controllers
         #region Authentication
         #region Login
         [HttpPost("Login")]
-        public async Task<ActionResult> Login([FromForm] LoginDTO login)
+        public async Task<ActionResult> Login( LoginDTO login)
         {
             #region Check Parameters 
             var EmptyParametersObj = new
@@ -155,7 +155,7 @@ namespace ExamsSystem.Controllers
         // PUT: api/Students/5
         [Authorize(Policy = "Student,Admin")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutStudent(int id, [FromForm] AddStudentDTO student)
+        public async Task<IActionResult> PutStudent(int id, AddStudentDTO student)
         {
             Student? std = await _context.GetById(student.ID);
             if (id != std.ID) return BadRequest();
@@ -184,9 +184,9 @@ namespace ExamsSystem.Controllers
 
         #region Add
         // POST: api/Students
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<ActionResult<AddStudentDTO>> PostStudent([FromForm] AddStudentDTO student)
+        public async Task<ActionResult<AddStudentDTO>> PostStudent( AddStudentDTO student)
         {
 
             if (student == null) return BadRequest();
