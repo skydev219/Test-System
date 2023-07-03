@@ -24,11 +24,14 @@ namespace ExamsSystem
             {
                 options.AddPolicy("AllowAll", builder =>
                 {
-                    builder.AllowAnyOrigin()
-                           .AllowAnyMethod()
-                           .AllowAnyHeader();
+                    builder
+                    .WithOrigins("http://localhost:4200")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
                 });
             });
+
             #endregion
 
             #region Json Serializer
@@ -72,9 +75,14 @@ namespace ExamsSystem
             builder.Services.AddAuthorization(options =>
             {
                 options.AddPolicy("Admin",
-                    policy => policy.RequireClaim(ClaimTypes.Role, "Admin"));
+                    policy => policy.RequireClaim("Admin"));
                 options.AddPolicy("Student",
                     policy => policy.RequireRole("Student"));
+                options.AddPolicy("Student,Admin", policy =>
+                {
+                    policy.RequireAuthenticatedUser();
+                    policy.RequireRole("Student", "Admin");
+                });
             });
             #endregion
 
