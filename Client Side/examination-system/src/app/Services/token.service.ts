@@ -8,10 +8,10 @@ export class TokenService {
   GetToken() {
     return localStorage.getItem('Token');
   }
-  GetRole(){
+  GetRole() {
     return localStorage.getItem('Role');
   }
-  SaveToken(token: string,role:string) {
+  SaveToken(token: string, role: string) {
     localStorage.setItem('Token', token);
     localStorage.setItem('Role', role);
   }

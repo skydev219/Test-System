@@ -13,13 +13,15 @@ export class LoginService {
   currentUser: IUser | undefined;
   private options = {
     observe: 'response' as const,
-    headers: new HttpHeaders()
-        .set("Content-Type", "application/json")
-        
+    headers: new HttpHeaders().set('Content-Type', 'application/json'),
   };
   logInStudent(user: string | null, pass: string | null) {
     this.currentUser = { username: user, password: pass };
-    return this.http.post(environment.contentful.loginStudent,this.currentUser,this.options);
+    return this.http.post(
+      environment.contentful.loginStudent,
+      this.currentUser,
+      this.options
+    );
   }
   logOut() {
     this.currentUser = undefined;
