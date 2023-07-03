@@ -10,8 +10,12 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./student-login.component.css'],
 })
 export class StudentLoginComponent {
-  constructor(private LoginService:LoginService,private TokenService:TokenService,private Router:Router){}
-  
+  constructor(
+    private LoginService: LoginService,
+    private TokenService: TokenService,
+    private Router: Router
+  ) {}
+
   loginForm = new FormGroup({
     username: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required]),
@@ -22,25 +26,27 @@ export class StudentLoginComponent {
   get GetPassword() {
     return this.loginForm.controls['password'];
   }
-  login(e:any){
+  login(e: any) {
     e.preventDefault();
+    debugger;
     if (this.loginForm.status === 'VALID') {
-      this.LoginService.logInStudent(this.GetUserName?.value,this.GetPassword?.value).subscribe({
-        next:(res:any) => {
+      this.LoginService.logInStudent(
+        this.GetUserName?.value,
+        this.GetPassword?.value
+      ).subscribe({
+        next: (res: any) => {
           console.log(res);
           if (res.ok) {
             let token = res.body.response.token;
             let role = res.body.response.role;
             console.log(role);
             console.log(token);
-            this.LoginService.currentUser?.role
-            this.TokenService.SaveToken(token,role);
+            this.LoginService.currentUser?.role;
+            this.TokenService.SaveToken(token, role);
             // this.Router.navigate(['/home']);
+          } else {
           }
-          else{
-
-          }
-        }
+        },
       });
     }
   }
