@@ -26,7 +26,6 @@ namespace ExamsSystem.Controllers
 
         #region Get
         // GET: api/Exams
-        [Authorize(Policy = "Student,Admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Exam>>> GetExams()
         {
@@ -46,7 +45,6 @@ namespace ExamsSystem.Controllers
         }
 
         // GET: api/Exams/5
-        [Authorize(Policy = "Student,Admin")]
         [HttpGet("{id}")]
         public async Task<ActionResult<Exam>> GetExam(int id)
         {
