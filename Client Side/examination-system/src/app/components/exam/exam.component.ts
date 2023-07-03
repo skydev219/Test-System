@@ -1,47 +1,46 @@
 import { environment } from './../../Environment/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TokenService } from 'src/app/Services/token.service';
+import { ExamService } from '../../Services/exam.service';
+import { Exam } from '../../Interfaces/All';
+import { reduce } from 'rxjs';
+import { StudentService } from 'src/app/Services/student.service';
 
 @Component({
   selector: 'app-exam',
   templateUrl: './exam.component.html',
-  styleUrls: ['./exam.component.css']
+  styleUrls: ['./exam.component.css'],
 })
 export class ExamComponent {
-  // private options = {
-  //   observe: 'response' as const,
-  //   headers: new HttpHeaders()
-  //       .set("Content-Type", "application/json")
-        
-  // };
-  constructor(private http:HttpClient,private TokenService:TokenService){}
+  examId?: number;
+  exam: Exam | undefined;
+  constructor(
+    private http: HttpClient,
+    private route: ActivatedRoute,
+    private router: Router,
+    private examService: ExamService,
+    private studentService: StudentService
+  ) {
+    this.route.params.subscribe((params) => {
+      this.examId = params['id'];
+    });
+  }
   ngOnInit(): void {
-    // this.http.get(environment.contentful.exam+"/4").subscribe({
-    //   next: (v) => {
-    //     console.log(v)
-    //   },
-    //   error: (e) => console.error(e),
-    //   complete: () => console.info('Success'),
-    // });
-    this.http.get(environment.contentful.exam+"/4", { headers: this.setheader }).subscribe({
-      next: (v) => {
-        console.log(v)
-      },
-      error: (e) => console.error(e),
-      complete: () => console.info('Success'),
-    });
-
-
+    if (this.studentService.isNotStudent()) {
+      this.router.navigate(['/student/login']);
+    } else {
+      this.examService.GetExamById(this.examId).subscribe({
+        next: (v: any) => {
+          this.exam = v.body;
+          this.exam?.questions.forEach((element) => {
+            console.log(element.answer.name);
+          });
+        },
+        error: (e) => console.error(e),
+        complete: () => console.info('Success'),
+      });
+    }
   }
-   
-  get setheader(){
-      const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${this.TokenService.GetToken()}`
-    });
-    return headers;
-  }
-      
-    
 }

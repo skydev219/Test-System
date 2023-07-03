@@ -15,6 +15,16 @@ export class LoginService {
     observe: 'response' as const,
     headers: new HttpHeaders().set('Content-Type', 'application/json'),
   };
+
+  loginAdmin(username: string, password: string) {
+    this.currentUser = { username: username, password: password };
+    return this.http.post(
+      environment.contentful.loginAdmin,
+      this.currentUser,
+      this.options
+    );
+  }
+
   logInStudent(user: string | null, pass: string | null) {
     this.currentUser = { username: user, password: pass };
     return this.http.post(

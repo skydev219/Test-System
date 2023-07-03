@@ -13,6 +13,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { StudentLoginComponent } from './components/student-login/student-login.component';
 import { StudentRegisterComponent } from './components/student-register/student-register.component';
 import { ExamComponent } from './components/exam/exam.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { AdminLoginComponent } from './components/admin/admin-login/admin-login.component';
+import { AdminHomeComponent } from './components/admin/admin-home/admin-home.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -22,6 +25,9 @@ import { ExamComponent } from './components/exam/exam.component';
     StudentLoginComponent,
     StudentRegisterComponent,
     ExamComponent,
+    FooterComponent,
+    AdminLoginComponent,
+    AdminHomeComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,12 +1,13 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../Environment/environment';
+import { TokenService } from './token.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class StudentService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private tokenService: TokenService) {}
   base = environment.contentful.student;
   private options = {
     observe: 'response' as const,
@@ -26,5 +27,13 @@ export class StudentService {
   }
   DeleteStudent(id: any) {
     return this.http.delete(`${this.base}/${id}`, this.options);
+  }
+
+  isNotStudent(): boolean {
+    return (
+      this.tokenService.GetRole() != 'Student' ||
+      this.tokenService.GetRole() == null ||
+      this.tokenService.GetToken() == null
+    );
   }
 }

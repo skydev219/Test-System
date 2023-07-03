@@ -1,6 +1,31 @@
-<p>home works!</p>
-<i class="fas fa-user"></i>
-<i class="fas fa-envelope"></i>
-
-<button [routerLink]="['/exam']" class="btn btn-dark"></button>
-
+<section class="container-fluid text-center">
+    <div class="box">
+        <h2 class="pt-5">Exams</h2>
+        <div class="row p-5 mt-3">
+            <div
+                *ngFor="let exam of exams"
+                class="col-sm-6 col-md-4 col-lg-3"
+            >
+                <div class="card">
+                    <img
+                        src="assets/images/course.png"
+                        class="card-img-top"
+                        alt="asd"
+                    >
+                    <div class="card-body">
+                        <h5 class="card-title">{{ exam.name }}</h5>
+                        <p class="card-text">
+                            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Delectus, id!
+                        </p>
+                        <a
+                            [routerLink]="['/exams', exam.id]"
+                            class="btn btn-primary"
+                        >
+                            Take Exam
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

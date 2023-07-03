@@ -1,0 +1,13 @@
+:root {
+    --text: #082524;
+    --background: #def7f6;
+    --primary-button: #4c98d6;
+    --secondary-button: #c9cbf3;
+    --accent: #23299a;
+}
+
+
+nav {
+    background-color: var(--background);
+    box-shadow: 0px 3px 20px 1px #a9dad9a5
+}

@@ -3,6 +3,8 @@ import { TokenService } from './../../Services/token.service';
 import { LoginService } from './../../Services/login.service';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import * as $ from 'jquery';
+import 'bootstrap';
 
 @Component({
   selector: 'app-student-login',
@@ -28,26 +30,36 @@ export class StudentLoginComponent {
   }
   login(e: any) {
     e.preventDefault();
-    debugger;
     if (this.loginForm.status === 'VALID') {
       this.LoginService.logInStudent(
         this.GetUserName?.value,
         this.GetPassword?.value
       ).subscribe({
-        next: (res: any) => {
-          console.log(res);
-          if (res.ok) {
-            let token = res.body.response.token;
-            let role = res.body.response.role;
-            console.log(role);
-            console.log(token);
+        next: (response: any) => {
+          console.log(response);
+          if (response.ok) {
+            let token = response.body.response.token;
+            let role = response.body.response.role;
+            let username = response.body.response.student.username;
             this.LoginService.currentUser?.role;
-            this.TokenService.SaveToken(token, role);
-            // this.Router.navigate(['/home']);
+            console.log();
+            this.TokenService.SaveToken(token, role, username);
+            this.Router.navigate(['/home']);
           } else {
           }
         },
+        error: (e) => {
+          this.showAlert();
+          console.log(e);
+        },
+        complete: () => console.info('Success'),
       });
     }
+  }
+  showAlert() {
+    $('#myAlert').addClass('show');
+  }
+  closeAlert() {
+    $('#myAlert').removeClass('show');
   }
 }

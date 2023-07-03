@@ -28,3 +28,21 @@ export class ExamService {
     return this.http.delete(`${this.base}/${id}`, this.options);
   }
 }
+
+interface IExam {
+  id: number;
+  name: string;
+}
+
+export class Exam implements IExam {
+  id: number;
+  name: string;
+
+  /**
+   * Exam Constructor
+   */
+  constructor(id: number, name: string) {
+    this.id = id;
+    this.name = name;
+  }
+}

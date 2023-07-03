@@ -1,1 +1,14 @@
-<p>exam works!</p>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <p>{{exam?.name}}</p>
+            <div *ngFor="let question of exam?.questions let i = index">
+                <p>
+                    <span>Question {{i+1}}:</span>
+                    {{question.name}}
+                </p>
+                <p>{{question.answer.name}}</p>
+            </div>
+        </div>
+    </div>
+</div>

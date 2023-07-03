@@ -9,9 +9,9 @@ import { StudentService } from 'src/app/Services/student.service';
   styleUrls: ['./student-register.component.css'],
 })
 export class StudentRegisterComponent {
-  constructor(private StudentService:StudentService,private Router:Router){}
+  constructor(private StudentService: StudentService, private Router: Router) {}
   registerForm = new FormGroup({
-    ID:new FormControl(0),
+    ID: new FormControl(0),
     Name: new FormControl('', [Validators.required, Validators.minLength(3)]),
     UserName: new FormControl('', [
       Validators.required,
@@ -28,18 +28,31 @@ export class StudentRegisterComponent {
   get GetPassword() {
     return this.registerForm.controls['Pass'];
   }
-  addStudent(e:any){
+  addStudent(e: any) {
     e.preventDefault();
     if (this.registerForm.status === 'VALID') {
-      console.log(this.registerForm.value)
+      console.log(this.registerForm.value);
       this.StudentService.AddStudent(this.registerForm.value).subscribe({
-        next:(res) =>{
+        next: (res) => {
           console.log(res);
-          // if (res.ok) {
-          //   this.Router.navigate(['/home']);
-          // }
-        }
+          if (res.ok) {
+            this.Router.navigate(['/home']);
+          }
+        },
+        error: (e) => {
+          this.showAlert();
+          console.error(e);
+        },
+        complete: () => console.info('Success'),
       });
+    } else {
+      this.showAlert();
     }
+  }
+  showAlert() {
+    $('#myAlert').addClass('show');
+  }
+  closeAlert() {
+    $('#myAlert').removeClass('show');
   }
 }
