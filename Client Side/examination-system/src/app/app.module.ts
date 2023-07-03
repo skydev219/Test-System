@@ -9,27 +9,27 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 import { AuthInterceptor } from './Interceptor/auth.interceptor';
 import { NotfoundComponent } from './components/notfound/notfound.component';
-import { StudentloginComponent } from './components/studentlogin/studentlogin.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { StudentregisterComponent } from './components/studentregister/studentregister.component';
+import { StudentLoginComponent } from './components/student-login/student-login.component';
+import { StudentRegisterComponent } from './components/student-register/student-register.component';
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
     HomeComponent,
     NotfoundComponent,
-    StudentloginComponent,
-    StudentregisterComponent
+    StudentLoginComponent,
+    StudentRegisterComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

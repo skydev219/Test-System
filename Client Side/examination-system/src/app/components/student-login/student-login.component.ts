@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-studentlogin',
-  templateUrl: './studentlogin.component.html',
-  styleUrls: ['./studentlogin.component.css'],
+  selector: 'app-student-login',
+  templateUrl: './student-login.component.html',
+  styleUrls: ['./student-login.component.css'],
 })
-export class StudentloginComponent {
+export class StudentLoginComponent {
   loginForm = new FormGroup({
     Username: new FormControl('', [Validators.required]),
     Password: new FormControl('', [Validators.required]),
