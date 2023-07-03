@@ -1,55 +1,55 @@
 <ng-container>
   <div class="registration-form">
-    <form [formGroup]="loginForm">
+    <form [formGroup]="loginForm" (submit)="login($event)">
       <div class="form-icon">
-        <span><i class="icon icon-user"></i></span>
+        <span><i class="fa-duotone fa-user"></i></span>
       </div>
       <div class="form-group">
         <input
           type="text"
-          formControlName="Username"
+          formControlName="username"
           class="form-control item"
           id="username"
           placeholder="Username"
         />
-        <ng-container *ngIf="GetUserName.touched">
-          <div
+        <ng-container class="" *ngIf="GetUserName.touched">
+          <span
             *ngIf="GetUserName.hasError('required')"
             class="form-text text-danger"
           >
             Required
-          </div>
+          </span>
         </ng-container>
       </div>
 
       <div class="form-group">
         <input
           type="password"
-          formControlName="Password"
+          formControlName="password"
           class="form-control item"
           id="password"
           placeholder="Password"
         />
         <ng-container *ngIf="GetPassword.touched">
-          <div
+          <span
             *ngIf="GetPassword.hasError('required')"
             class="form-text text-danger"
           >
             Required
-          </div>
+          </span>
         </ng-container>
       </div>
 
-      <div class="form-group">
-        <button type="button" class="btn btn-block create-account">
-          Create Account
+      <div class="form-group text-center">
+        <button type="submit" class="btn btn-block create-account">
+          Log In
         </button>
       </div>
     </form>
     <div class="social-media">
       <div class="form-group">
-        <button type="button" class="btn btn-block create-account">
-          LogIn
+        <button type="button" [routerLink]="['/student/register']" class="btn btn-block create-account">
+          Create Account
         </button>
       </div>
     </div>

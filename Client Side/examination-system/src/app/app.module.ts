@@ -12,6 +12,7 @@ import { NotfoundComponent } from './components/notfound/notfound.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { StudentLoginComponent } from './components/student-login/student-login.component';
 import { StudentRegisterComponent } from './components/student-register/student-register.component';
+import { ExamComponent } from './components/exam/exam.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,6 +21,7 @@ import { StudentRegisterComponent } from './components/student-register/student-
     NotfoundComponent,
     StudentLoginComponent,
     StudentRegisterComponent,
+    ExamComponent,
   ],
   imports: [
     BrowserModule,

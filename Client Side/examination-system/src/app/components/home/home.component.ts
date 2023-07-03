@@ -1,6 +1,5 @@
-import { TokenService } from './../../Services/token.service';
-import { LoginService } from './../../Services/login.service';
-import { Component } from '@angular/core';
+import { Component} from '@angular/core';
+
 
 @Component({
   selector: 'app-home',
@@ -8,17 +7,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent {
-  constructor(
-    private LoginService: LoginService,
-    private token: TokenService
-  ) {}
-  login() {
-    console.log('data.token');
-    this.LoginService.logIn('', '').subscribe({
-      next: (data) => {
-        console.log(data.token);
-        this.token.SaveToken(data.token);
-      },
-    });
-  }
+
+ 
 }
