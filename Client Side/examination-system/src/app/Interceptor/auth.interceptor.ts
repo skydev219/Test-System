@@ -27,9 +27,9 @@ export class AuthInterceptor implements HttpInterceptor {
         },
       });
     }
-    // req = req.clone({
-    //   withCredentials: true,
-    // });
+    req = req.clone({
+      withCredentials: true,
+    });
 
     return next.handle(req);
   }
