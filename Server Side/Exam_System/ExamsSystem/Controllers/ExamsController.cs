@@ -58,7 +58,7 @@ namespace ExamsSystem.Controllers
 
         #region Add
         // POST: api/Exams
-        [Authorize(Policy = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<AddExamDTO>> PostExam(AddExamDTO exam)
         {

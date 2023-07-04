@@ -7,6 +7,7 @@ import { NotfoundComponent } from './components/notfound/notfound.component';
 import { ExamComponent } from './components/exam/exam.component';
 import { AdminLoginComponent } from './components/admin/admin-login/admin-login.component';
 import { AdminHomeComponent } from './components/admin/admin-home/admin-home.component';
+import { StudentGradesComponent } from './components/grade/student-grades/student-grades.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -16,7 +17,7 @@ const routes: Routes = [
   { path: 'exams/:id', component: ExamComponent },
   { path: 'admin/login', component: AdminLoginComponent },
   { path: 'admin/home', component: AdminHomeComponent },
-
+  {path:'student/grades',component:StudentGradesComponent},
   { path: '**', component: NotfoundComponent },
 ];
 

@@ -16,7 +16,7 @@ export class LoginService {
     headers: new HttpHeaders().set('Content-Type', 'application/json'),
   };
 
-  loginAdmin(username: string, password: string) {
+  loginAdmin(username: string|null, password: string|null) {
     this.currentUser = { username: username, password: password };
     return this.http.post(
       environment.contentful.loginAdmin,

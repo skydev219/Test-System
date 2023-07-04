@@ -1,0 +1,21 @@
+:root {
+    --text: #082524;
+    --background: #def7f6;
+    --primary-button: #4c98d6;
+    --secondary-button: #c9cbf3;
+    --accent: #23299a;
+}
+
+section {
+    background-color: var(--background);
+}
+.btn-p{
+    background-color: var(--primary-button);
+}
+.add{
+    position: relative;
+    left: 30%;
+}
+button:hover{
+    border: #c9cbf3;
+}

@@ -14,10 +14,15 @@ export class TokenService {
   GetUsername() {
     return localStorage.getItem('Username');
   }
-  SaveToken(token: string, role: string, username: string) {
+  GetUserId() {
+    return localStorage.getItem('UserId');
+  }
+  SaveToken(id:number,token: string, role: string, username: string) {
     localStorage.setItem('Token', token);
     localStorage.setItem('Role', role);
     localStorage.setItem('Username', username);
+    localStorage.setItem('UserId', id.toString());
+
   }
   ClearToken() {
     localStorage.clear();

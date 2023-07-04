@@ -1,1 +1,56 @@
-<h1>admin-home works!</h1>
+<section class="container-fluid text-center">
+    <div class="box">
+        <h2 class="pt-5">Exams <span class="add"><button data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-p">Add Exam</button></span></h2>
+        <div class="row p-5 mt-3">
+            <div
+                *ngFor="let exam of exams"
+                class="col-sm-6 col-md-4 col-lg-3 mb-4"
+            >
+                <div class="card">
+                    <img
+                        src="assets/images/edit-exam.jpg"
+                        class="card-img-top"
+                        alt="asd"
+                    >
+                    <div class="card-body">
+                        <h5 class="card-title">{{ exam.name }}</h5>
+                        <p class="card-text">
+                            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Delectus, id!
+                        </p>
+                        <a
+                            [routerLink]="['/exams', exam.id]"
+                            class="btn btn-p"
+                        >
+                            Edit Exam
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5 text-center" id="exampleModalLabel">New Exam</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="addForm">
+            <div class="mb-3">
+              <label for="recipient-name" class="col-form-label">Exam Name:</label>
+              <input type="text" formControlName="examname" class="form-control" id="recipient-name">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+            
+            <span class="text-danger me-5" *ngIf="addForm.status === 'INVALID' && getExamName.touched">Invalid Input</span>
+          <button type="button" class="ms-5 btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" (click)="add()" data-bs-dismiss="modal" class="btn btn-primary">Add</button>
+        </div>
+      </div>
+    </div>
+  </div>
+

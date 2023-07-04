@@ -5,7 +5,11 @@
     --secondary-button: #c9cbf3;
     --accent: #23299a;
 }
-
-section {
-    background-color: var(--background);
+.length{
+padding: 5%;
+padding-bottom: 2%;
+background: var(--background);
+}
+.bg-bg{
+ background-color: var(--background);
 }

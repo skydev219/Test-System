@@ -18,7 +18,7 @@
                             Lorem ipsum dolor sit, amet consectetur adipisicing elit. Delectus, id!
                         </p>
                         <a
-                            [routerLink]="['/exams', exam.id]"
+                            (click)="takeExam(exam.id)"
                             class="btn btn-primary"
                         >
                             Take Exam

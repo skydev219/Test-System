@@ -1,0 +1,26 @@
+<div class="py-5 length" >
+<div class=" container ">
+    <div class="card ">
+        <p-table [value]="grades" styleClass="p-datatable-striped" [tableStyle]="{'min-width': '50rem'}">
+            <ng-template pTemplate="header" >
+                <tr>
+                    <th>Exam</th>
+                    <th>Grade</th>
+                    <th>Total Grade</th>
+
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-grade>
+                <tr>
+                    <td>{{grade.exam}}</td>
+                    <td>{{grade.grade}}</td>
+                    <td>10</td>
+
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>
+<div class="">
+
+</div>

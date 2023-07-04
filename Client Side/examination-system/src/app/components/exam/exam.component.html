@@ -1,14 +1,21 @@
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <p>{{exam?.name}}</p>
-            <div *ngFor="let question of exam?.questions let i = index">
-                <p>
-                    <span>Question {{i+1}}</span>
-                    {{question.name}}
-                </p>
-                <p>{{question.answer.name}}</p>
+<div class="container-fluid length">
+    <div class="text-center lead mb-5"><h2>{{exam?.name}} Exam</h2></div>
+    <div class="card">
+        <h5 class="card-header">Question {{counter+1}}</h5>
+        <div class="card-body">
+            <h5 class="card-text" >{{QuestionUI?.name}}</h5>
+            
+            <div>
+                <div>
+                    <div *ngFor="let answer of AnswersUI" class="field-checkbox mb-1">
+                        <p-radioButton [inputId]="answer.name" name="answer" [value]="answer" [(ngModel)]="SelectedAnswer"></p-radioButton>
+                        <label [for]="answer.id" class="mx-2">{{ answer.name }}</label>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+    <button (click)="submit()"  class="btn btn-primary my-3 " > {{counter+1 != Questions?.length?'Next':'Submit'}} </button>
+
+    
 </div>

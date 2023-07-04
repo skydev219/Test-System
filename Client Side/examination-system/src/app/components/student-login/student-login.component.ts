@@ -41,9 +41,10 @@ export class StudentLoginComponent {
             let token = response.body.response.token;
             let role = response.body.response.role;
             let username = response.body.response.student.username;
+            let userid = response.body.response.student.id;
             this.LoginService.currentUser?.role;
             console.log();
-            this.TokenService.SaveToken(token, role, username);
+            this.TokenService.SaveToken(userid,token, role, username);
             this.Router.navigate(['/home']);
           } else {
           }
