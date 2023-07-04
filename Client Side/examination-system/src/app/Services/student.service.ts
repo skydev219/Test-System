@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../Environment/environment';
 import { TokenService } from './token.service';
+import { Student } from '../Interfaces/All';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +18,7 @@ export class StudentService {
     return this.http.get(this.base, this.options);
   }
   GetStudentById(id: any) {
-    return this.http.get(`${this.base}/${id}`, this.options);
+    return this.http.get<any>(`${this.base}/${id}`, this.options);
   }
   AddStudent(student: any) {
     return this.http.post(this.base, student, this.options);

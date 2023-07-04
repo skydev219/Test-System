@@ -10,6 +10,7 @@ import { ExamService } from '../../Services/exam.service';
 import { Exam } from '../../Interfaces/All';
 import { reduce } from 'rxjs';
 import { StudentService } from 'src/app/Services/student.service';
+import  Swal  from 'sweetalert2'
 
 @Component({
   selector: 'app-exam',
@@ -40,7 +41,7 @@ export class ExamComponent {
     });
   }
   ngOnInit(): void {
-    
+
     if (this.studentService.isNotStudent()) {
       this.router.navigate(['/student/login']);
     } else {
@@ -53,7 +54,7 @@ export class ExamComponent {
         complete: () => console.info('Success'),
       });
     }
-    
+
   }
   createAnswersArray(){
     if (this.exam) {
@@ -81,9 +82,17 @@ export class ExamComponent {
     this.counter++;
     if (this.counter == this.Questions?.length) {
       this.GradeService.AddGrade({st_id:this.TokenService.GetUserId(),exam_ID:this.exam?.id,grade1:this.correctAnswers}).subscribe({
-        next:(response) =>{
-          console.log(response);
-          this.router.navigate(['/home']);
+        next: (response) => {
+          let percentage = (this.correctAnswers / 10)*100
+          Swal.fire({
+            title: 'Congratulations',
+            text: `You have finish Test\nGrade is ${percentage}%`,
+            icon: 'success',
+            confirmButtonText: 'OK'
+          }).then((e) => {
+            console.log(response);
+            this.router.navigate(['/home']);
+          })
         }
       })
       //navigate to grades
@@ -94,8 +103,8 @@ export class ExamComponent {
       }
       this.createAnswersArray();
     }
-    
-    
+
+
     console.log(this.correctAnswers);
   }
 

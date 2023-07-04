@@ -6,49 +6,32 @@
         >
             Examination System
         </a>
-        <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-        >
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+        data-bs-target="#navbarNav" aria-controls="navbarNav"
+        aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div
-            class="collapse navbar-collapse"
-            id="navbarNav"
-        >
+        <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav container-fluid">
                 <li class="nav-item me-auto">
-                    <a
-                        class="nav-link me-4"
+                    <a class="nav-link me-4"
                         [routerLink]="['home']"
                         [routerLinkActive]="'text-primary'"
-                        [routerLinkActiveOptions]="{ exact: true }"
-                    >
+                        [routerLinkActiveOptions]="{ exact: true }">
                         Home
                     </a>
                 </li>
+                <ng-container>
                 <li class="nav-item">
-                    <a
-                        class="nav-link"
-                        [routerLink]="['']"
-                        [routerLinkActive]="'text-success'"
-                        [routerLinkActiveOptions]="{ exact: true }"
-                    >
+                    <a class="nav-link"
+                        [routerLink]="['/student/profile']"
+                        [routerLinkActive]="'text-primary'"
+                        [routerLinkActiveOptions]="{ exact: true }">
                         <strong>{{getUsername}}</strong>
                     </a>
                 </li>
-                <ng-container>
-                    <li
-                        class="nav-item"
-                        *ngIf="username== null"
-                    >
-                        <a
-                            class="nav-link"
+                    <li class="nav-item" *ngIf="username== null">
+                        <a class="nav-link"
                             [routerLink]="['student/login']"
                             [routerLinkActive]="'text-success'"
                             [routerLinkActiveOptions]="{ exact: true }"
@@ -56,12 +39,8 @@
                             Login
                         </a>
                     </li>
-                    <li
-                        class="nav-item"
-                        *ngIf="username!= null"
-                    >
-                        <a
-                            class="nav-link"
+                    <li class="nav-item" *ngIf="username!= null">
+                        <a class="nav-link"
                             [routerLink]="['']"
                             [routerLinkActive]="'text-success'"
                             [routerLinkActiveOptions]="{ exact: true }"

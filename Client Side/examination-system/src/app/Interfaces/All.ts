@@ -50,7 +50,7 @@ export interface Grade {
   exam_ID: number;
   st_ID: number;
   grade1: number;
-  exam: string;
+  exam: Exam;
   st: Student;
 }
 
@@ -70,5 +70,5 @@ export interface Student {
   pass: string;
   admin_ID: number;
   admin: string;
-  grades: string[];
+  grades: Grade[];
 }

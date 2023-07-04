@@ -4,7 +4,6 @@
         <h5 class="card-header">Question {{counter+1}}</h5>
         <div class="card-body">
             <h5 class="card-text" >{{QuestionUI?.name}}</h5>
-            
             <div>
                 <div>
                     <div *ngFor="let answer of AnswersUI" class="field-checkbox mb-1">
@@ -16,6 +15,4 @@
         </div>
     </div>
     <button (click)="submit()"  class="btn btn-primary my-3 " > {{counter+1 != Questions?.length?'Next':'Submit'}} </button>
-
-    
 </div>

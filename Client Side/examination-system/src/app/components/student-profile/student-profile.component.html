@@ -1,0 +1,24 @@
+<header class="container mt-4 p-3">
+    <img src="assets/images/user.png" alt="User" class="me-3">
+    <strong>Mohammed</strong>
+</header>
+<div class="container">
+        <section class="mt-5 mb-5 p5 grades">
+        <table class="table">
+            <thead class="table-primary">
+                <tr>
+                    <th>ID</th>
+                    <th>Exam</th>
+                    <th>Grade</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let grade of student?.grades let i = index">
+                    <td>i</td>
+                    <td>{{grade.exam.name}}</td>
+                    <td>{{(grade.grade1/10)*100}} %</td>
+                </tr>
+            </tbody>
+        </table>
+        </section>
+</div>

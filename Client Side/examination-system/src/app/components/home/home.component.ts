@@ -2,7 +2,6 @@ import { TokenService } from './../../Services/token.service';
 import { GradeService } from './../../Services/grade.service';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, Output } from '@angular/core';
-import { environment } from 'src/app/Environment/environment';
 import { Exam, ExamService } from '../../Services/exam.service';
 import { Router } from '@angular/router';
 
@@ -36,9 +35,10 @@ export class HomeComponent implements OnInit {
         }
       },
       error:() =>{
-        this.router.navigate(['/exams', exam_id]) 
+        this.router.navigate(['/exams', exam_id])
       }
-      
+
   })
   }
+
 }

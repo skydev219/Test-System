@@ -8,7 +8,6 @@ import { TokenService } from 'src/app/Services/token.service';
 })
 export class NavbarComponent {
   @Input() username: string | null = '';
-
   constructor(private tokenService: TokenService) {}
 
   get getUsername(): any {
