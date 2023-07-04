@@ -18,7 +18,6 @@ import { AdminLoginComponent } from './components/admin/admin-login/admin-login.
 import { AdminHomeComponent } from './components/admin/admin-home/admin-home.component';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { ToastModule } from 'primeng/toast';
-import { EditExamComponent } from './components/edit-exam/edit-exam.component';
 import { TableModule } from 'primeng/table';
 import { StudentGradesComponent } from './components/grade/student-grades/student-grades.component';
 
@@ -34,7 +33,6 @@ import { StudentGradesComponent } from './components/grade/student-grades/studen
     FooterComponent,
     AdminLoginComponent,
     AdminHomeComponent,
-    EditExamComponent,
     StudentGradesComponent,
   ],
   imports: [
