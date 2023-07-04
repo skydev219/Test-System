@@ -45,7 +45,7 @@ namespace ExamsSystem.Controllers
         }
 
         // GET: api/Exams/5
-        [Authorize(Policy = "Student,Admin")]
+        [Authorize(Roles = "Student,Admin")]
         [HttpGet("{id}")]
         public async Task<ActionResult<Exam>> GetExam(int id)
         {

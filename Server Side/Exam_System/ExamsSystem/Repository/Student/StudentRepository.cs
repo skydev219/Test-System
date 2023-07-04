@@ -53,7 +53,11 @@ namespace ExamsSystem.Repository
 
         public async Task<Student> GetById(int id)
         {
-            return await _dbcontext.Students.FirstOrDefaultAsync(s => s.ID == id);
+            return await _dbcontext
+                .Students
+                .Include(s => s.Grades)
+                .ThenInclude(g => g.Exam)
+                .FirstOrDefaultAsync(s => s.ID == id);
         }
         #endregion
 
