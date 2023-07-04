@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using ExamsSystem.Models;
+using Newtonsoft.Json;
 
 namespace ExamsSystem.DTO
 {
@@ -8,5 +9,6 @@ namespace ExamsSystem.DTO
         public int ID { get; set; }
         public string Name { get; set; }
         public int Exam_ID { get; set; }
+        public AnswerDTO Answer { get; set; }
     }
 }

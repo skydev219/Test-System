@@ -19,3 +19,9 @@ section {
 button:hover{
     border: #c9cbf3;
 }
+.bg-bg{
+    background-color: var(--background);
+    padding-top: 20%;
+    padding-bottom: 20%;
+
+}

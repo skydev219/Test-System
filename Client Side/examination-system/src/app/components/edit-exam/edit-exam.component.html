@@ -1,0 +1,104 @@
+<div class="py-5 length" >
+    <div class="text-center pb-3">
+        <h2>{{examname}} Exam <span class="add"><button data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-p">Add Question</button></span></h2>
+    </div>
+<div class=" container ">
+    <div class="card ">
+        <p-table [value]="questions" styleClass="p-datatable-striped" [tableStyle]="{'min-width': '50rem'}">
+            <ng-template pTemplate="header" >
+                <tr>
+                    <th>Question Title</th>
+                    <th>Answer</th>
+                    <th></th>
+
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-question>
+                <div *ngIf="questions.length==0">
+                    <div class=" text-center bg-bg">
+                      <p-progressSpinner></p-progressSpinner>
+                    </div>
+                  </div>
+                <tr>
+                    <td>{{question.name}}</td>
+                    <td>{{question.answer.name}}</td>
+                    <td>
+                        <a
+                            data-bs-toggle="modal" 
+                            data-bs-target="#editmodel"
+                            (click)="edit(question)"
+                            class="btn btn-p mx-3"
+                        >
+                        <i class=" fa-regular fa-pen-to-square"></i>
+                        </a>
+                        <a
+                            (click)="delete(question.id)"
+                            class="btn btn-p"
+                        >
+                        <i class="fa-solid fa-trash-can"></i>
+                        </a>
+                    </td>
+
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>
+<div class="">
+
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5 text-center" id="exampleModalLabel">New Exam</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="addForm">
+            <div class="mb-3">
+              <label for="recipient-name" class="col-form-label">Question:</label>
+              <input type="text" formControlName="question" class="form-control" id="recipient-name">
+            </div>
+            <div class="mb-3">
+                <label for="recipient-name" class="col-form-label">Answer:</label>
+                <input type="text" formControlName="answer" class="form-control" id="recipient-name">
+              </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+            
+          <span class="text-danger me-5" *ngIf="addForm.status === 'INVALID' && (getQuestion.touched || getAnswer.touched)">Invalid Input</span>
+          <button type="button" class="ms-5 btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" (click)="add()" data-bs-dismiss="modal" class="btn btn-primary">Add</button>
+        </div>
+      </div>
+    </div>
+</div>
+<div class="modal fade" id="editmodel" tabindex="-1" aria-labelledby="editmodelLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5 text-center" id="editmodelLabel">New Exam</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="editForm">
+            <div class="mb-3">
+              <label for="recipient-name" class="col-form-label">Question:</label>
+              <input type="text" formControlName="question" class="form-control" id="recipient-name">
+            </div>
+            <div class="mb-3">
+                <label for="recipient-name" class="col-form-label">Answer:</label>
+                <input type="text" formControlName="answer" class="form-control" id="recipient-name">
+              </div>
+          </form>
+        </div>
+        <div class="modal-footer">   
+          <span class="text-danger me-5" *ngIf="editForm.status === 'INVALID' && (getEditQuestion.touched || getEditAnswer.touched)">Invalid Input</span>
+          <button type="button" class="ms-5 btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" (click)="editquestion()" data-bs-dismiss="modal" class="btn btn-primary">Edit</button>
+        </div>
+      </div>
+    </div>
+</div>

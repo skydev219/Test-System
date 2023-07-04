@@ -1,7 +1,13 @@
+
 <section class="container-fluid text-center">
     <div class="box">
         <h2 class="pt-5">Exams <span class="add"><button data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-p">Add Exam</button></span></h2>
         <div class="row p-5 mt-3">
+          <div *ngIf="exams.length==0">
+            <div class=" text-center bg-bg">
+              <p-progressSpinner></p-progressSpinner>
+            </div>
+          </div>
             <div
                 *ngFor="let exam of exams"
                 class="col-sm-6 col-md-4 col-lg-3 mb-4"
@@ -18,10 +24,24 @@
                             Lorem ipsum dolor sit, amet consectetur adipisicing elit. Delectus, id!
                         </p>
                         <a
-                            [routerLink]="['/exams', exam.id]"
+                            [routerLink]="['/student/grades', exam.id]"
+                            class="btn btn-p "
+                        >
+                        <i class="fa-regular fa-eye"></i>
+                        </a>
+                        <a
+                            data-bs-toggle="modal" 
+                            data-bs-target="#editExamModel"
+                            (click)="edit(exam.name,exam.id)"
+                            class="btn btn-p mx-3"
+                        >
+                        <i class=" fa-regular fa-pen-to-square"></i>
+                        </a>
+                        <a
+                            (click)="delete(exam.id)"
                             class="btn btn-p"
                         >
-                            Edit Exam
+                        <i class="fa-solid fa-trash-can"></i>
                         </a>
                     </div>
                 </div>
@@ -49,6 +69,30 @@
             <span class="text-danger me-5" *ngIf="addForm.status === 'INVALID' && getExamName.touched">Invalid Input</span>
           <button type="button" class="ms-5 btn btn-secondary" data-bs-dismiss="modal">Close</button>
           <button type="button" (click)="add()" data-bs-dismiss="modal" class="btn btn-primary">Add</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="editExamModel" tabindex="-1" aria-labelledby="editExamModelLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5 text-center" id="editExamModelLabel">Edit Exam</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="editForm">
+            <div class="mb-3">
+              <label for="recipient-name" class="col-form-label">Exam Name:</label>
+              <input type="text" formControlName="editname" class="form-control" id="recipient-name">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">  
+          <span class="text-danger me-5" *ngIf="editForm.status === 'INVALID' && getEditName.touched">Invalid Input</span>
+          <button type="button" class="ms-5 btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" (click)="editexam()"data-bs-dismiss="modal" class="btn btn-primary">Edit</button>
+          <button type="button" [routerLink]="['/edit/exam',editexam_id]" data-bs-dismiss="modal" class="btn btn-primary">Questions</button>
         </div>
       </div>
     </div>

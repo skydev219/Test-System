@@ -47,7 +47,7 @@ namespace ExamsSystem.Controllers
 
         #region Update
         // PUT: api/Questions/5
-        [Authorize(Policy = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutQuestion(int id, AddQuestionDTO question)
         {
@@ -58,6 +58,7 @@ namespace ExamsSystem.Controllers
             try
             {
                 que.Name = question.Name;
+                que.Answer.Name = question.Answer.Name;
                 await _context.Update(id, que);
             }
             catch (DbUpdateConcurrencyException)
@@ -75,17 +76,22 @@ namespace ExamsSystem.Controllers
 
         #region Add
         // POST: api/Questions
-        [Authorize(Policy = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<AddQuestionDTO>> PostQuestion(AddQuestionDTO question)
         {
             if (question == null) return BadRequest();
             try
             {
+                Answer a = new Answer()
+                {
+                    Name = question.Answer.Name,
+                };
                 Question q = new Question()
                 {
                     Name = question.Name,
                     Exam_ID = question.Exam_ID,
+                    Answer = a
                 };
                 await _context.Add(q);
                 return CreatedAtAction("GetQuestion", new { id = q.ID }, q);
@@ -100,7 +106,7 @@ namespace ExamsSystem.Controllers
 
         #region Delete
         // DELETE: api/Questions/5
-        [Authorize(Policy = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteQuestion(int id)
         {

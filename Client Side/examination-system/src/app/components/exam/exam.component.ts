@@ -38,7 +38,7 @@ export class ExamComponent {
   ) {
     this.route.params.subscribe((params) => {
       this.examId = params['id'];
-    });
+    }); 
   }
   ngOnInit(): void {
 

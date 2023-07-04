@@ -107,7 +107,7 @@ namespace ExamsSystem.Controllers
 
         #region Delete
         // DELETE: api/Exams/5
-        [Authorize(Policy = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteExam(int id)
         {

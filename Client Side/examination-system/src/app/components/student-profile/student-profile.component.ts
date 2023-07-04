@@ -11,7 +11,7 @@ import { TokenService } from '../../Services/token.service';
 export class StudentProfileComponent implements OnInit{
 
   student: Student | undefined;
-
+  studentname=localStorage.getItem('Username');
   constructor(private studentService: StudentService,private tokenService: TokenService) { }
 
   ngOnInit(): void {

@@ -2,6 +2,11 @@
     <div class="box">
         <h2 class="pt-5">Exams</h2>
         <div class="row p-5 mt-3">
+            <div *ngIf="exams.length==0">
+                <div class=" text-center bg-bg">
+                  <p-progressSpinner></p-progressSpinner>
+                </div>
+              </div>
             <div
                 *ngFor="let exam of exams"
                 class="col-sm-6 col-md-4 col-lg-3 mb-4"
@@ -19,7 +24,7 @@
                         </p>
                         <a
                             (click)="takeExam(exam.id)"
-                            class="btn btn-primary"
+                            class="btn btn-p"
                         >
                             Take Exam
                         </a>

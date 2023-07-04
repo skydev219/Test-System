@@ -27,7 +27,7 @@ namespace ExamsSystem.Repository
 
         public Task<Question> GetById(int id)
         {
-            return _dbcontext.Questions.FirstOrDefaultAsync(q => q.ID == id);
+            return _dbcontext.Questions.Include(q => q.Answer).FirstOrDefaultAsync(q => q.ID == id);
         }
         #endregion
 

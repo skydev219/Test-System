@@ -49,7 +49,7 @@ namespace ExamsSystem.Controllers
 
         #region Update
         // PUT: api/Answers/5
-        [Authorize(Policy = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAnswer(int id, AddAnswerDTO answer)
         {
@@ -77,7 +77,7 @@ namespace ExamsSystem.Controllers
 
         #region Add
         // POST: api/Answers
-        [Authorize(Policy = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<AddAnswerDTO>> PostAnswer(AddAnswerDTO answer)
         {
@@ -103,7 +103,7 @@ namespace ExamsSystem.Controllers
 
         #region Delete
         // DELETE: api/Answers/5
-        [Authorize(Policy = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAnswer(int id)
         {

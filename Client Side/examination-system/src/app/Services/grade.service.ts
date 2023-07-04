@@ -27,7 +27,7 @@ export class GradeService {
   }
   GetGradeByExam(ex_id: any) {
     return this.http.get(
-      `${this.base.getGradeByStudent}/${ex_id}`,
+      `${this.base.getGradeByExam}/${ex_id}`,
       this.options
     );
   }

@@ -24,6 +24,8 @@ import { StudentProfileComponent } from './components/student-profile/student-pr
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { EditExamComponent } from './components/edit-exam/edit-exam.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,6 +40,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     AdminHomeComponent,
     StudentGradesComponent,
     StudentProfileComponent,
+    EditExamComponent,
   ],
   imports: [
     BrowserModule,
@@ -52,6 +55,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatProgressSpinnerModule,
     BrowserAnimationsModule,
     MatSlideToggleModule,
+    ProgressSpinnerModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

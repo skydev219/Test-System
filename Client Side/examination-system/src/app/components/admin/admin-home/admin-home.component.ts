@@ -12,8 +12,13 @@ import { FormControl, FormGroup, NgModel, Validators } from '@angular/forms';
 })
 export class AdminHomeComponent implements OnInit {
   exams: Exam[] = [];
+  editexam_name:string='';
+  editexam_id:any;
   addForm = new FormGroup({
-    examname:new FormControl('',[Validators.required,Validators.minLength(3)])
+    examname:new FormControl('',[Validators.required,Validators.minLength(3),Validators.maxLength(50)])
+  });
+  editForm = new FormGroup({
+    editname:new FormControl('',[Validators.required,Validators.minLength(3),Validators.maxLength(50)])
   });
   
   constructor(private studentService: StudentService, private router: Router,private examService: ExamService) {}
@@ -33,12 +38,18 @@ export class AdminHomeComponent implements OnInit {
   get getExamName(){
     return this.addForm.controls['examname'];
   }
+  get getEditName(){
+    return this.editForm.controls['editname'];
+  }
   add(){
     if (this.addForm.status === 'VALID') {
-      this.examService.AddExam({id:2,name:this.getExamName.value}).subscribe({
+      let exam:Exam = {id:0,name:this.getExamName.value ??''}
+      this.examService.AddExam(exam).subscribe({
         
         next:(response)=>{
           console.log(response);
+          this.exams.push(exam);
+          this.getExamName.setValue('');
           this.router.navigate([this.router.url])
 
         },
@@ -50,6 +61,50 @@ export class AdminHomeComponent implements OnInit {
       });
     }
   }
-  
- 
+  delete(id:any){
+    if (confirm(`Are you sure to delete`)) {
+      this.examService.DeleteExam(id).subscribe({
+        next:(response)=>{
+         this.exams= this.exams.filter( e => e.id != id);
+         console.log(response);
+        },
+        error: (e) => {
+          // this.showAlert();
+          console.log(e);
+        },
+        complete: () => console.info('Success')
+      })
+    }
+
+  }
+  edit(name:any,id:any){
+    this.getEditName.setValue(name);
+    this.editexam_name=name;
+    this.editexam_id=id;
+  }
+  editexam(){
+    if (this.editForm.status === 'VALID') {
+      if (this.editexam_id) {
+        if (this.editexam_name === this.getEditName.value) {
+          console.log('No Changes')
+          return
+        }
+        let exam:Exam = {id:this.editexam_id,name:this.getEditName.value ??''}
+        this.examService.EditExam(this.editexam_id,exam).subscribe({
+          next:(response)=>{
+            this.exams= this.exams.filter( e => e.id != this.editexam_id);
+            this.exams.push(exam);
+            this.getEditName.setValue('');
+           console.log(response);
+          },
+          error: (e) => {
+            // this.showAlert();
+            console.log(e);
+          },
+          complete: () => console.info('Success')
+        })
+      }
+    }
+
+  }
 }

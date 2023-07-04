@@ -5,16 +5,21 @@
     --secondary-button: #c9cbf3;
     --accent: #23299a;
 }
-
-section {
-    background-color: var(--background);
+.length{
+padding: 5%;
+padding-bottom: 2%;
+background: var(--background);
 }
 .bg-bg{
-    background-color: var(--background);
-    padding-top: 20%;
-    padding-bottom: 20%;
-
+ background-color: var(--background);
 }
 .btn-p{
     background-color: var(--primary-button);
+}
+.add{
+    position: relative;
+    left: 30%;
+}
+button:hover{
+    border: #c9cbf3;
 }

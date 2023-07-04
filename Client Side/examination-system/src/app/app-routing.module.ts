@@ -9,6 +9,7 @@ import { AdminLoginComponent } from './components/admin/admin-login/admin-login.
 import { AdminHomeComponent } from './components/admin/admin-home/admin-home.component';
 import { StudentGradesComponent } from './components/grade/student-grades/student-grades.component';
 import { StudentProfileComponent } from './components/student-profile/student-profile.component';
+import { EditExamComponent } from './components/edit-exam/edit-exam.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -19,7 +20,8 @@ const routes: Routes = [
   { path: 'admin/login', component: AdminLoginComponent },
   { path: 'admin/home', component: AdminHomeComponent },
   { path: 'student/profile', component: StudentProfileComponent },
-  {path:'student/grades',component:StudentGradesComponent},
+  {path:'student/grades/:id',component:StudentGradesComponent},
+  {path:'edit/exam/:id',component:EditExamComponent},
   { path: '**', component: NotfoundComponent },
 ];
 
