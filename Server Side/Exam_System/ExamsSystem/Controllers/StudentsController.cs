@@ -81,7 +81,7 @@ namespace ExamsSystem.Controllers
                 message = "Login successful",
                 response = new
                 {
-                    token = _jwt.GenentateToken(claims),
+                    token = _jwt.GenentateToken(claims, 1),
                     role = "Student",
                     student = new
                     {

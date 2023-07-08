@@ -17,11 +17,10 @@ namespace ExamsSystem.Repository.JWT
         {
             _configuration = configuration;
         }
-
         #endregion
 
         #region Methods
-        public string GenentateToken(ICollection<Claim> claims)
+        public string GenentateToken(ICollection<Claim> claims, int numberOfDays)
         {
             #region Secret Key
             SymmetricSecurityKey secritKey =
@@ -34,9 +33,26 @@ namespace ExamsSystem.Repository.JWT
                 _configuration["Jwt:Audience"],
                 claims: claims,
                 signingCredentials: signingCredentials,
-                expires: DateTime.Now.AddDays(1)
+                expires: DateTime.Now.AddDays(numberOfDays)
                 );
             return new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
+        }
+
+        public string ClearerToken(string token)
+        {
+            if (token != null)
+            {
+                // Create a new set of claims and an expiration date in the past
+                List<Claim>? claims = new List<Claim>();
+                int expirationDate = -1;
+
+                // Generate a new JWT token with the expired claims and set it as the authentication header
+                var newToken = GenentateToken(claims, expirationDate);
+                return newToken;
+
+            }
+
+            return token;
         }
 
         #endregion

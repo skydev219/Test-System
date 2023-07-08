@@ -80,7 +80,7 @@ namespace ExamsSystem.Controllers
                 message = "Login successful",
                 response = new
                 {
-                    token = _jwt.GenentateToken(claims),
+                    token = _jwt.GenentateToken(claims, 1),
                     role = "Admin",
                     admin = new
                     {
@@ -99,6 +99,40 @@ namespace ExamsSystem.Controllers
 
         #region Register
 
+        #endregion
+
+        #region Logout
+        //[Authorize(Policy = "Admin")]
+        [HttpPost("Logout")]
+        public async Task<ActionResult> Logout()
+        {
+
+            // Retrieve the current JWT token from the authentication header
+            string? token = HttpContext.Request
+                .Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+
+            string newToken = _jwt.ClearerToken(token);
+
+            HttpContext.Response.Headers.Add("Authorization", "Bearer ");
+
+
+            #region Response Formatter
+            var response = new
+            {
+
+                StatusCode = 200,
+                message = "Logout successful",
+                response = new
+                {
+                    token = newToken,
+                    role = "Admin",
+                }
+
+            };
+            #endregion
+
+            return Ok(response);
+        }
         #endregion
         #endregion
 
